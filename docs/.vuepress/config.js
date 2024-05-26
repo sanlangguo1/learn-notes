@@ -107,6 +107,10 @@ module.exports = {
             text: "qiankun隔离方案",
             link: "/engineering/qiankunShadow.md",
           },
+          {
+            text: "sentry 最佳实践",
+            link: "/engineering/useSentry.md",
+          },
         ],
       },
       {
@@ -140,7 +144,7 @@ module.exports = {
           },
         ],
       },
-      { text: "github", link: "https://github.com/sanlangguo/learn-notes" },
+      { text: "github", link: "https://github.com/sanlangguo1/learn-notes" },
     ],
     sidebar: 'auto'
   }),
