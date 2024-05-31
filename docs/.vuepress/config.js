@@ -124,6 +124,10 @@ module.exports = {
             text: "工作中常用工具网站",
             link: "/tools/user-tools.md",
           },
+          {
+            text: "git 常用问题收集",
+            link: "/git/index.md"
+          }
         ],
       },
       {
