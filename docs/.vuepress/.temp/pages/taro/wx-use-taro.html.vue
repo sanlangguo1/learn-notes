@@ -81,8 +81,8 @@
 <p>原生入口 app.wxss 引入 Taro dist 文件下的 app-origin.wxss 和 common.wxss， 只需改动一次</p>
 </li>
 </ol>
-<div class="language-css line-numbers-mode" data-ext="css"><pre v-pre class="language-css"><code><span class="token atrule"><span class="token rule">@import</span> <span class="token string">"learn-taro/dist/app-origin.wxss"</span><span class="token punctuation">;</span></span>
-<span class="token atrule"><span class="token rule">@import</span> <span class="token string">"learn-taro/dist/common.wxss"</span><span class="token punctuation">;</span></span>
+<div class="language-css line-numbers-mode" data-ext="css"><pre v-pre class="language-css"><code><span class="token atrule"><span class="token rule">@import</span> <span class="token string">"taro/dist/app-origin.wxss"</span><span class="token punctuation">;</span></span>
+<span class="token atrule"><span class="token rule">@import</span> <span class="token string">"taro/dist/common.wxss"</span><span class="token punctuation">;</span></span>
 
 </code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><ol start="3">
 <li>更改 dist 下的资源路径，包括页面跳转和图片资源，每次打包需要自动更新或者手动微调</li>
@@ -92,21 +92,21 @@
  * /pages/report/daily-report-list/daily-report-list
  * /pages/compass/index
  * /pages/more/index'
- * learn-taro/dist 以上老页面手动还原 
- * oldPages 替换 pages 先执行脚本后执行全局（./learn-taro/dist）替换
+ * taro/dist 以上老页面手动还原 
+ * oldPages 替换 pages 先执行脚本后执行全局（./taro/dist）替换
  */</span>
 <span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token comment">// // // 要替换的源字符串和目标字符串</span>
 <span class="token keyword">const</span> sourceString <span class="token operator">=</span> <span class="token string">"pages/"</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> targetString <span class="token operator">=</span> <span class="token string">"learn-taro/dist/pages/"</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> targetString <span class="token operator">=</span> <span class="token string">"taro/dist/pages/"</span><span class="token punctuation">;</span>
 <span class="token comment">// const sourceString = "assets/";</span>
-<span class="token comment">// const targetString = "learn-taro/dist/assets/";</span>
+<span class="token comment">// const targetString = "taro/dist/assets/";</span>
 
 
 <span class="token comment">// 要替换的文件路径</span>
-<span class="token keyword">const</span> directoryPath <span class="token operator">=</span> <span class="token string">'learn-taro/dist/'</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> directoryPath <span class="token operator">=</span> <span class="token string">'taro/dist/'</span><span class="token punctuation">;</span>
 <span class="token comment">// 递归遍历文件夹</span>
 <span class="token keyword">function</span> <span class="token function">traverseDirectory</span><span class="token punctuation">(</span><span class="token parameter">dirPath</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     fs<span class="token punctuation">.</span><span class="token function">readdirSync</span><span class="token punctuation">(</span>dirPath<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">file</span> <span class="token operator">=></span> <span class="token punctuation">{</span>

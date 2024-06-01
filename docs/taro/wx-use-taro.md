@@ -67,8 +67,8 @@
 2. 原生入口 app.wxss 引入 Taro dist 文件下的 app-origin.wxss 和 common.wxss， 只需改动一次
 
 ```css
-@import "learn-taro/dist/app-origin.wxss";
-@import "learn-taro/dist/common.wxss";
+@import "taro/dist/app-origin.wxss";
+@import "taro/dist/common.wxss";
 
 ```
 
@@ -82,21 +82,21 @@
  * /pages/report/daily-report-list/daily-report-list
  * /pages/compass/index
  * /pages/more/index'
- * learn-taro/dist 以上老页面手动还原 
- * oldPages 替换 pages 先执行脚本后执行全局（./learn-taro/dist）替换
+ * taro/dist 以上老页面手动还原 
+ * oldPages 替换 pages 先执行脚本后执行全局（./taro/dist）替换
  */
 const fs = require('fs');
 const path = require('path');
 
 // // // 要替换的源字符串和目标字符串
 const sourceString = "pages/";
-const targetString = "learn-taro/dist/pages/";
+const targetString = "taro/dist/pages/";
 // const sourceString = "assets/";
-// const targetString = "learn-taro/dist/assets/";
+// const targetString = "taro/dist/assets/";
 
 
 // 要替换的文件路径
-const directoryPath = 'learn-taro/dist/';
+const directoryPath = 'taro/dist/';
 // 递归遍历文件夹
 function traverseDirectory(dirPath) {
     fs.readdirSync(dirPath).forEach(file => {
