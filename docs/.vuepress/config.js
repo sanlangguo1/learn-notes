@@ -82,6 +82,10 @@ module.exports = {
             text: "react常见问题",
             link: "/react/common-problem.md",
           },
+          {
+            text: "原生微信小程序项目使用 Taro",
+            link: "/taro/wx-use-taro.md",
+          },
         ],
       },
       {
