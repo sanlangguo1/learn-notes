@@ -114,6 +114,15 @@ module.exports = {
         ],
       },
       {
+        text: "读书笔记",
+        children: [
+          {
+            text: "阿里三板斧",
+            link: "/books/ali-sanbanfu.md",
+          },
+        ],
+      },
+      {
         text: "常用工具",
         children: [
           {

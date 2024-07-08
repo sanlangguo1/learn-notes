@@ -23,6 +23,8 @@
 <li>与团队成员分享 Sentry 的使用心得和最佳实践,促进知识共享和流程改进。</li>
 </ul>
 <h3 id="设置警告" tabindex="-1"><a class="header-anchor" href="#设置警告" aria-hidden="true">#</a> 设置警告</h3>
+<p><a href="https://cloud.tencent.com/developer/article/1887800" target="_blank" rel="noopener noreferrer">参考链接<ExternalLinkIcon/></a></p>
+<p><a href="https://www.cnblogs.com/hacker-linner/p/15232607.html" target="_blank" rel="noopener noreferrer">参考链接<ExternalLinkIcon/></a></p>
 </div></template>
 
 
