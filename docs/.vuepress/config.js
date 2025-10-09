@@ -13,29 +13,31 @@ module.exports = {
     logo: "/img/logo.jpg",
     navbar: [
       { text: "首页", link: "/nav/list.md" },
-      { text: "算法",
+      {
+        text: "算法",
         children: [
           {
             text: "链表",
-            link: "/algorithm/linked-list.md"
+            link: "/algorithm/linked-list.md",
           },
           {
             text: "二叉树",
-            link: "/algorithm/binary-tree.md"
+            link: "/algorithm/binary-tree.md",
           },
           {
             text: "二分查找",
-            link: "/algorithm/binary-search.md"
+            link: "/algorithm/binary-search.md",
           },
-        ]
+        ],
       },
       {
-        text: "动画", children: [
+        text: "动画",
+        children: [
           {
             text: "初识 WebGL",
             link: "/js/WebGL_01.md",
           },
-        ]
+        ],
       },
       {
         text: "JS",
@@ -51,7 +53,7 @@ module.exports = {
           {
             text: "TS 使用指南",
             link: "/ts/list.md",
-          }
+          },
         ],
       },
       { text: "http", link: "/http/index.md" },
@@ -73,7 +75,7 @@ module.exports = {
           {
             text: "vue3设计与实现",
             link: "/vue/devise-realization.md",
-          }, 
+          },
           {
             text: "react系统知识梳理",
             link: "/react/contrast.md",
@@ -91,6 +93,10 @@ module.exports = {
       {
         text: "前端工程化",
         children: [
+          {
+            text: "前端性能优化",
+            link: "/engineering/optimise.md",
+          },
           {
             text: "vue3 vite 打包优化",
             link: "/engineering/vite-build.md",
@@ -139,8 +145,8 @@ module.exports = {
           },
           {
             text: "git 常用问题收集",
-            link: "/git/index.md"
-          }
+            link: "/git/index.md",
+          },
         ],
       },
       {
@@ -163,7 +169,7 @@ module.exports = {
       },
       { text: "github", link: "https://github.com/sanlangguo1/learn-notes" },
     ],
-    sidebar: 'auto'
+    sidebar: "auto",
   }),
   plugins: [autoCatalogPlugin()],
 };
