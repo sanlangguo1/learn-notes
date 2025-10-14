@@ -69,7 +69,7 @@
 <li>如何检测内存泄漏：使用浏览器开发者工具的 Heap Profiler、快照对比、分配剖析 (Allocation Profiling)、Timeline 追踪。</li>
 <li>解决策略：及时销毁、取消绑定、弱引用 (WeakMap / WeakSet)、合理作用域控制、复用对象池等。</li>
 </ul>
-<p>本节强调：长期运行的页面／单页应用如果忽略内存泄漏问题，会随着使用时间推移导致性能大幅下降甚至浏览器崩溃。</p>
+<p>强调：长期运行的页面／单页应用如果忽略内存泄漏问题，会随着使用时间推移导致性能大幅下降甚至浏览器崩溃。</p>
 <hr>
 <h2 id="_4-极限运算性能" tabindex="-1"><a class="header-anchor" href="#_4-极限运算性能" aria-hidden="true">#</a> 4 极限运算性能</h2>
 <p>这一节偏向“高计算 / 大数据 / 复杂运算”场景下的性能处理策略。</p>
@@ -81,9 +81,38 @@
 <li><strong>缓存 / 结果复用</strong>：如果计算有重复子任务，可缓存其结果避免重复计算。</li>
 <li><strong>懒计算 / 按需计算</strong>：只有在必要时才触发计算，不要过早或过多地执行复杂逻辑。</li>
 </ul>
-<p>本节的目的在于：当应用遇到极限场景时（如大量数据处理、复杂动画、图形渲染等），应该有性能策略可用，而不是一味地“优化网络/渲染”那一路径。</p>
-<hr>
-<h2 id="_5-总结" tabindex="-1"><a class="header-anchor" href="#_5-总结" aria-hidden="true">#</a> 5 总结</h2>
+<p>当应用遇到极限场景时（如大量数据处理、复杂动画、图形渲染等），应该有性能策略可用，而不是一味地“优化网络/渲染”那一路径。</p>
+<h3 id="_5-总结" tabindex="-1"><a class="header-anchor" href="#_5-总结" aria-hidden="true">#</a> 5 总结</h3>
+<table>
+<thead>
+<tr>
+<th>优化目标</th>
+<th>原理方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加载更快</td>
+<td>减少 HTTP 请求、启用缓存、压缩资源、懒加载</td>
+</tr>
+<tr>
+<td>渲染更快</td>
+<td>减少回流重绘、合理使用合成层</td>
+</tr>
+<tr>
+<td>JS 更快</td>
+<td>避免长任务、使用 Web Worker</td>
+</tr>
+<tr>
+<td>首屏更快</td>
+<td>SSR / SSG / prefetch / preconnect</td>
+</tr>
+<tr>
+<td>内存更低</td>
+<td>避免内存泄漏（闭包、DOM 引用）</td>
+</tr>
+</tbody>
+</table>
 <p>性能优化是一个全链路、持续的过程。不能只盯一个环节（如网络或 JS），而需从资源获取 → 渲染 → 运行时 → 长期稳定性 → 计算性能多个维度统筹考虑。</p>
 </div></template>
 

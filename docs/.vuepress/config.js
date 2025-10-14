@@ -102,8 +102,8 @@ module.exports = {
             link: "/engineering/vite-build.md",
           },
           {
-            text: "webpack",
-            link: "https://xxpromise.gitee.io/webpack5-docs/",
+            text: "webpack 工作原理",
+            link: "/engineering/webpack.md",
           },
           {
             text: "Lerna",
