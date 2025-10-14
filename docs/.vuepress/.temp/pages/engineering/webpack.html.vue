@@ -1,5 +1,6 @@
 <template><div><h3 id="webpack-工作原理" tabindex="-1"><a class="header-anchor" href="#webpack-工作原理" aria-hidden="true">#</a> webpack 工作原理</h3>
 <h4 id="webpack-工作流程图" tabindex="-1"><a class="header-anchor" href="#webpack-工作流程图" aria-hidden="true">#</a> webpack 工作流程图：</h4>
+<p><img src="/img/webpack.svg" alt=""></p>
 <div class="language-mermaid line-numbers-mode" data-ext="mermaid"><pre v-pre class="language-mermaid"><code><span class="token keyword">graph</span> TD
     A<span class="token text string">[启动 webpack]</span> <span class="token arrow operator">--></span> B<span class="token text string">[读取配置]</span>
     B <span class="token arrow operator">--></span> C<span class="token text string">[webpack.config.js]</span>
@@ -54,7 +55,7 @@
 如果深人剖析源码，则上述过程可以用更加专业的术语总结为:模块会经历加载(<strong>loaded</strong>)、封存(<strong>sealed</strong>)、优化(<strong>optimized</strong>)、分块(<strong>chunked</strong>)、哈希(<strong>hashed</strong>)和重新创建(<strong>restored</strong>)这个经典步骤。</p>
 <h4 id="compiler-和-compilation" tabindex="-1"><a class="header-anchor" href="#compiler-和-compilation" aria-hidden="true">#</a> compiler 和 compilation</h4>
 <p><strong>compiler</strong> 和 <strong>compiation</strong> 这两个对象是 <strong>webpack</strong> 核心原理中最重要的概念。它们是理解 <strong>webpack</strong>(作原理、<strong>loader</strong> 和插件工作的基础。
-<strong>compiler</strong> 对象:它的实例包含了完整的 webpack 配置，且全局只有一个<strong>compiler</strong> 实例，因此它就像 <strong>webpack</strong>的骨架或神经中枢。当插件被实例化的时候，就会收到一个<strong>compilier</strong> 对象.通过这个对象可以访问<strong>webpack</strong> 的内部环境。</p>
+<strong>compiler</strong> 对象:它的实例包含了完整的 <strong>webpack</strong> 配置，且全局只有一个<strong>compiler</strong> 实例，因此它就像 <strong>webpack</strong>的骨架或神经中枢。当插件被实例化的时候，就会收到一个<strong>compilier</strong> 对象.通过这个对象可以访问<strong>webpack</strong> 的内部环境。</p>
 <p><strong>compilation</strong>对象:当<strong>webpack</strong>以开发式运行时，每当检测到文件变化时，一个新的<strong>compilation</strong>对象就会被创建。这个对象包含了当前的模块资源、编译生成资源、变化的文件等信息。也就是说，所有构建过程中产生的构建数据都会被存储在该对象上，它也掌控書建过程中的每一个环节。该对象还提供了很多事件回调供插件做扩展。</p>
 <h4 id="流程图说明" tabindex="-1"><a class="header-anchor" href="#流程图说明" aria-hidden="true">#</a> 流程图说明：</h4>
 <ol>

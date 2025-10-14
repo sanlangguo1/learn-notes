@@ -2,6 +2,8 @@
 
 #### webpack 工作流程图：
 
+![](/img/webpack.svg)
+
 ```mermaid
 graph TD
     A[启动 webpack] --> B[读取配置]
@@ -61,7 +63,7 @@ graph TD
 #### compiler 和 compilation
 
 **compiler** 和 **compiation** 这两个对象是 **webpack** 核心原理中最重要的概念。它们是理解 **webpack**(作原理、**loader** 和插件工作的基础。
-**compiler** 对象:它的实例包含了完整的 webpack 配置，且全局只有一个**compiler** 实例，因此它就像 **webpack**的骨架或神经中枢。当插件被实例化的时候，就会收到一个**compilier** 对象.通过这个对象可以访问**webpack** 的内部环境。
+**compiler** 对象:它的实例包含了完整的 **webpack** 配置，且全局只有一个**compiler** 实例，因此它就像 **webpack**的骨架或神经中枢。当插件被实例化的时候，就会收到一个**compilier** 对象.通过这个对象可以访问**webpack** 的内部环境。
 
 **compilation**对象:当**webpack**以开发式运行时，每当检测到文件变化时，一个新的**compilation**对象就会被创建。这个对象包含了当前的模块资源、编译生成资源、变化的文件等信息。也就是说，所有构建过程中产生的构建数据都会被存储在该对象上，它也掌控書建过程中的每一个环节。该对象还提供了很多事件回调供插件做扩展。
 
