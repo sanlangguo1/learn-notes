@@ -39,6 +39,37 @@
 <li><strong>资源压缩 / 精灵图 / 合图 / 雪碧图 / WebP / SVG</strong> 等优化手段。</li>
 </ul>
 <p>这部分主要从“URL 发起请求”到“资源加载完成”这一段链路来拆解网络性能的影响因素。 (<a href="https://cread.jd.com/read/startRead.action?bookId=30746878&amp;readType=1&amp;utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">Cread<ExternalLinkIcon/></a>)</p>
+<h4 id="前端网络优化策略" tabindex="-1"><a class="header-anchor" href="#前端网络优化策略" aria-hidden="true">#</a> 前端网络优化策略</h4>
+<table>
+<thead>
+<tr>
+<th>整体架构</th>
+<th>前端</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>使用持久连接</td>
+<td>压缩文件体积</td>
+</tr>
+<tr>
+<td>使用 CDN</td>
+<td>合并小体积文件，使用雪碧图和字体图标避免不必要的下载</td>
+</tr>
+<tr>
+<td>无法合并的小体积文件使用 HTTP combo</td>
+<td>避免不必要的下载</td>
+</tr>
+<tr>
+<td>控制域名数目</td>
+<td>合理使用缓存</td>
+</tr>
+<tr>
+<td></td>
+<td>按需加载</td>
+</tr>
+</tbody>
+</table>
 <h3 id="_2-2-渲染" tabindex="-1"><a class="header-anchor" href="#_2-2-渲染" aria-hidden="true">#</a> 2.2 渲染</h3>
 <p>在资源被加载之后，浏览器还要执行 CSS / JS / 布局 / 绘制 / 合成等操作，这里是“资源”变成“可视内容”的关键路径。</p>
 <h4 id="关键因素-优化方向" tabindex="-1"><a class="header-anchor" href="#关键因素-优化方向" aria-hidden="true">#</a> 关键因素 &amp; 优化方向</h4>
