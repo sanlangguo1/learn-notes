@@ -11,6 +11,10 @@ export const pagesData = {
   "v-529817a0": () => import(/* webpackChunkName: "v-529817a0" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/algorithm/linked-list.html.js").then(({ data }) => data),
   // path: /books/ali-sanbanfu.html
   "v-2fa5792e": () => import(/* webpackChunkName: "v-2fa5792e" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/books/ali-sanbanfu.html.js").then(({ data }) => data),
+  // path: /git/
+  "v-74473916": () => import(/* webpackChunkName: "v-74473916" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/git/index.html.js").then(({ data }) => data),
+  // path: /http/
+  "v-14b3094e": () => import(/* webpackChunkName: "v-14b3094e" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/http/index.html.js").then(({ data }) => data),
   // path: /engineering/ios.html
   "v-1e23863e": () => import(/* webpackChunkName: "v-1e23863e" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/engineering/ios.html.js").then(({ data }) => data),
   // path: /engineering/lerna.html
@@ -25,10 +29,6 @@ export const pagesData = {
   "v-bf04d2c2": () => import(/* webpackChunkName: "v-bf04d2c2" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/engineering/vite-build.html.js").then(({ data }) => data),
   // path: /engineering/webpack.html
   "v-5e4a8b01": () => import(/* webpackChunkName: "v-5e4a8b01" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/engineering/webpack.html.js").then(({ data }) => data),
-  // path: /git/
-  "v-74473916": () => import(/* webpackChunkName: "v-74473916" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/git/index.html.js").then(({ data }) => data),
-  // path: /http/
-  "v-14b3094e": () => import(/* webpackChunkName: "v-14b3094e" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/http/index.html.js").then(({ data }) => data),
   // path: /browser/01.html
   "v-6f622f78": () => import(/* webpackChunkName: "v-6f622f78" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/browser/01.html.js").then(({ data }) => data),
   // path: /browser/02.html

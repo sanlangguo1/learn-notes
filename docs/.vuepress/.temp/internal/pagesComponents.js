@@ -13,6 +13,10 @@ export const pagesComponents = {
   "v-529817a0": defineAsyncComponent(() => import(/* webpackChunkName: "v-529817a0" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/algorithm/linked-list.html.vue")),
   // path: /books/ali-sanbanfu.html
   "v-2fa5792e": defineAsyncComponent(() => import(/* webpackChunkName: "v-2fa5792e" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/books/ali-sanbanfu.html.vue")),
+  // path: /git/
+  "v-74473916": defineAsyncComponent(() => import(/* webpackChunkName: "v-74473916" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/git/index.html.vue")),
+  // path: /http/
+  "v-14b3094e": defineAsyncComponent(() => import(/* webpackChunkName: "v-14b3094e" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/http/index.html.vue")),
   // path: /engineering/ios.html
   "v-1e23863e": defineAsyncComponent(() => import(/* webpackChunkName: "v-1e23863e" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/engineering/ios.html.vue")),
   // path: /engineering/lerna.html
@@ -27,10 +31,6 @@ export const pagesComponents = {
   "v-bf04d2c2": defineAsyncComponent(() => import(/* webpackChunkName: "v-bf04d2c2" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/engineering/vite-build.html.vue")),
   // path: /engineering/webpack.html
   "v-5e4a8b01": defineAsyncComponent(() => import(/* webpackChunkName: "v-5e4a8b01" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/engineering/webpack.html.vue")),
-  // path: /git/
-  "v-74473916": defineAsyncComponent(() => import(/* webpackChunkName: "v-74473916" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/git/index.html.vue")),
-  // path: /http/
-  "v-14b3094e": defineAsyncComponent(() => import(/* webpackChunkName: "v-14b3094e" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/http/index.html.vue")),
   // path: /browser/01.html
   "v-6f622f78": defineAsyncComponent(() => import(/* webpackChunkName: "v-6f622f78" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/browser/01.html.vue")),
   // path: /browser/02.html
