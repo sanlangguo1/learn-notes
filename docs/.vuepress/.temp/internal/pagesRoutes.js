@@ -119,4 +119,5 @@ export const pagesRoutes = [
   ["v-2d0ac054","/v8/",{"title":"V8"},[]],
   ["v-744e35e2","/vue/",{"title":"Vue"},[]],
   ["v-daaaecb4","/%E9%9A%8F%E6%89%8B%E8%AE%B0/",{"title":"随手记"},["/随手记/"]],
+  ["v-1aab8132","/engineering/safety.html",{"title":""},[":md"]],
 ]

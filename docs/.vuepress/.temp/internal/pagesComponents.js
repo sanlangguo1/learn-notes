@@ -241,4 +241,6 @@ export const pagesComponents = {
   "v-744e35e2": defineAsyncComponent(() => import(/* webpackChunkName: "v-744e35e2" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/vue/index.html.vue")),
   // path: /%E9%9A%8F%E6%89%8B%E8%AE%B0/
   "v-daaaecb4": defineAsyncComponent(() => import(/* webpackChunkName: "v-daaaecb4" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/随手记/index.html.vue")),
+  // path: /engineering/safety.html
+  "v-1aab8132": defineAsyncComponent(() => import(/* webpackChunkName: "v-1aab8132" */"/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/pages/engineering/safety.html.vue")),
 }
