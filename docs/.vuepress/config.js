@@ -94,6 +94,10 @@ module.exports = {
         text: "前端工程化",
         children: [
           {
+            text: "前端安全",
+            link: "/engineering/safety.md",
+          },
+          {
             text: "前端性能优化",
             link: "/engineering/optimise.md",
           },
