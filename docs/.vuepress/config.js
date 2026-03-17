@@ -102,6 +102,10 @@ module.exports = {
             link: "/engineering/optimise.md",
           },
           {
+            text: "css优化",
+            link: "/engineering/cssOptimise.md",
+          },
+          {
             text: "vue3 vite 打包优化",
             link: "/engineering/vite-build.md",
           },

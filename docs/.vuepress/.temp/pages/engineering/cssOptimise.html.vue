@@ -1,0 +1,479 @@
+<template><div><h2 id="一、优化前准备-精准定位优化点" tabindex="-1"><a class="header-anchor" href="#一、优化前准备-精准定位优化点" aria-hidden="true">#</a> 一、优化前准备：精准定位优化点</h2>
+<h3 id="实操操作" tabindex="-1"><a class="header-anchor" href="#实操操作" aria-hidden="true">#</a> 实操操作</h3>
+<ol>
+<li>通过浏览器<strong>开发者工具</strong>（Network 面板看 CSS 资源加载耗时、Performance 面板分析渲染/布局卡顿节点、<strong>Layers 面板监控合成层数量</strong>）定位具体性能问题；</li>
+<li>仅针对有问题的模块优化，避免全量无意义操作。</li>
+</ol>
+<h3 id="优化原因" tabindex="-1"><a class="header-anchor" href="#优化原因" aria-hidden="true">#</a> 优化原因</h3>
+<p>不同 CSS 优化技巧适用场景不同，盲目全量优化会浪费开发时间，甚至因过度优化引入样式问题。浏览器工具可直观量化性能问题，让优化有明确目标，避免凭经验判断。</p>
+<hr>
+<h2 id="二、核心优化-减少渲染阻塞-优化-cssom-构建" tabindex="-1"><a class="header-anchor" href="#二、核心优化-减少渲染阻塞-优化-cssom-构建" aria-hidden="true">#</a> 二、核心优化：减少渲染阻塞，优化 CSSOM 构建</h2>
+<h3 id="一-精简-css-代码-降低解析成本" tabindex="-1"><a class="header-anchor" href="#一-精简-css-代码-降低解析成本" aria-hidden="true">#</a> （一）精简 CSS 代码，降低解析成本</h3>
+<h4 id="实操操作-1" tabindex="-1"><a class="header-anchor" href="#实操操作-1" aria-hidden="true">#</a> 实操操作</h4>
+<ol>
+<li><strong>删除无用样式</strong>：清理开发残留的未使用 CSS 规则；大型项目推荐使用 <strong>PurgeCSS</strong> 在构建时自动扫描 HTML/JS 文件并删除未使用的样式，可将 CSS 体积从数百 KB 压缩到几 KB，远比手动清理可靠；</li>
+<li><strong>简化选择器</strong>：摒弃多层嵌套、高优先级复合选择器，使用单级/简单组合选择器；</li>
+<li><strong>精准应用样式</strong>：避免用 <code v-pre>*</code> 等通用选择器，利用 <code v-pre>font-size</code>/<code v-pre>color</code> 等继承特性减少重复样式；</li>
+<li><strong>最小化 + 压缩</strong>：生产环境通过 Webpack/Vite 做 CSS 最小化（删空格/注释），服务器开启 <strong>gzip/brotli 压缩</strong>。</li>
+</ol>
+<h4 id="优化原因-1" tabindex="-1"><a class="header-anchor" href="#优化原因-1" aria-hidden="true">#</a> 优化原因</h4>
+<p>浏览器构建 CSSOM 时会解析所有 CSS 规则，无用样式/复杂选择器会增加解析时间，拖慢渲染树生成。CSS 文件体积越大，网络加载耗时越长，压缩后可大幅减少传输体积，提升加载速度。</p>
+<h4 id="优缺点" tabindex="-1"><a class="header-anchor" href="#优缺点" aria-hidden="true">#</a> 优缺点</h4>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>降低 CSS 解析/加载耗时，加速 CSSOM 构建，提升首屏渲染速度</td>
+<td>模块化管理需要开发规范，团队需统一编码习惯</td>
+</tr>
+<tr>
+<td>PurgeCSS 等工具自动化清理，比手动清理更彻底、更可靠</td>
+<td>需正确配置 PurgeCSS 的 content 扫描路径，否则会误删动态类名</td>
+</tr>
+<tr>
+<td>简化选择器让样式更易维护，后续覆盖样式无需高优先级权重</td>
+<td>压缩后代码无格式，需保留源文件用于开发维护</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="二-关键-css-内联-消除首屏渲染阻塞" tabindex="-1"><a class="header-anchor" href="#二-关键-css-内联-消除首屏渲染阻塞" aria-hidden="true">#</a> （二）关键 CSS 内联，消除首屏渲染阻塞</h3>
+<h4 id="实操操作-2" tabindex="-1"><a class="header-anchor" href="#实操操作-2" aria-hidden="true">#</a> 实操操作</h4>
+<ol>
+<li><strong>提取关键 CSS 内联</strong>：将首屏渲染所需的最小 CSS 集合直接内联到 <code v-pre>&lt;head&gt;</code> 的 <code v-pre>&lt;style&gt;</code> 标签中，彻底消除首屏 CSS 的网络请求阻塞；</li>
+<li><strong>非关键 CSS 异步加载</strong>：通过 <code v-pre>rel=&quot;preload&quot;</code> + <code v-pre>onload</code> 回调将非关键 CSS 切换为异步加载：</li>
+</ol>
+<div class="language-html line-numbers-mode" data-ext="html"><pre v-pre class="language-html"><code><span class="token comment">&lt;!-- 关键 CSS 内联 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+  <span class="token comment">/* 首屏最小必需样式 */</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+
+<span class="token comment">&lt;!-- 非关键 CSS 异步加载 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span>
+  <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preload<span class="token punctuation">"</span></span>
+  <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>non-critical.css<span class="token punctuation">"</span></span>
+  <span class="token attr-name">as</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>style<span class="token punctuation">"</span></span>
+  <span class="token special-attr"><span class="token attr-name">onload</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value javascript language-javascript"><span class="token keyword">this</span><span class="token punctuation">.</span>onload<span class="token operator">=</span><span class="token keyword">null</span><span class="token punctuation">;</span><span class="token keyword">this</span><span class="token punctuation">.</span>rel<span class="token operator">=</span><span class="token string">'stylesheet'</span></span><span class="token punctuation">"</span></span></span>
+<span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>noscript</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>non-critical.css<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>noscript</span><span class="token punctuation">></span></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><ol start="3">
+<li><strong>工具辅助</strong>：使用 Critical、Penthouse 等工具自动提取关键 CSS，避免手动维护；</li>
+<li><strong>媒体查询拆分</strong>：按场景拆分 CSS 文件，给非当前场景的样式表添加 <code v-pre>media</code> 属性，例：<code v-pre>&lt;link href=&quot;print.css&quot; rel=&quot;stylesheet&quot; media=&quot;print&quot;&gt;</code>，浏览器会异步下载但不阻塞渲染。</li>
+</ol>
+<h4 id="优化原因-2" tabindex="-1"><a class="header-anchor" href="#优化原因-2" aria-hidden="true">#</a> 优化原因</h4>
+<p>浏览器默认阻塞渲染直到所有 CSS 下载并解析完成。关键 CSS 内联可将首屏渲染所需样式的加载时间降为零（无网络请求），是比 <code v-pre>media</code> 属性拆分更彻底的方案，能大幅改善 FCP（首次内容绘制）指标。</p>
+<h4 id="优缺点-1" tabindex="-1"><a class="header-anchor" href="#优缺点-1" aria-hidden="true">#</a> 优缺点</h4>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>彻底消除首屏 CSS 渲染阻塞，大幅提升 FCP</td>
+<td>内联 CSS 无法被浏览器单独缓存，每次页面加载都会重复传输</td>
+</tr>
+<tr>
+<td>配合工具自动提取，维护成本可控</td>
+<td>关键 CSS 体积需严格控制，过大会增加 HTML 体积，适得其反</td>
+</tr>
+<tr>
+<td><code v-pre>media</code> 属性拆分实现简单，适合中小型项目</td>
+<td>需精准判断「首屏必需 CSS」，判断失误会导致首屏样式缺失</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="三-优化资源加载-提升获取速度" tabindex="-1"><a class="header-anchor" href="#三-优化资源加载-提升获取速度" aria-hidden="true">#</a> （三）优化资源加载，提升获取速度</h3>
+<h4 id="实操操作-3" tabindex="-1"><a class="header-anchor" href="#实操操作-3" aria-hidden="true">#</a> 实操操作</h4>
+<ol>
+<li><strong>SVG Sprite / Icon Font</strong>（现代首选）：图标类资源优先使用 SVG Sprite 或 Icon Font，矢量无失真、可通过 CSS 控制颜色和尺寸、HTTP/2 环境下无需合并请求；</li>
+<li><strong>CSS 精灵图</strong>（HTTP/1.1 兼容场景）：在明确需要兼容 HTTP/1.1 的环境中，将小图标/小背景图合并为单个位图，通过 <code v-pre>background-position</code> 定位显示；</li>
+<li><strong>预加载关键资源</strong>：首屏必需的 CSS/字体/图片，用 <code v-pre>&lt;link rel=&quot;preload&quot; href=&quot;xxx.css&quot; as=&quot;style&quot;&gt;</code> 预加载。</li>
+</ol>
+<h4 id="优化原因-3" tabindex="-1"><a class="header-anchor" href="#优化原因-3" aria-hidden="true">#</a> 优化原因</h4>
+<p>在 HTTP/1.1 下，每个小图片都会发起一次 HTTP 请求，请求数过多会增加网络耗时，精灵图可将多请求合并为 1 次。但 <strong>HTTP/2 多路复用</strong>已使精灵图减少请求数的优势基本消失，且精灵图存在缓存粒度粗（修改一个图标导致整张图缓存失效）的缺点，现代项目中 SVG Sprite 是更优解。<code v-pre>preload</code> 让浏览器优先加载关键资源并缓存，避免后续使用时的加载延迟。</p>
+<h4 id="优缺点-2" tabindex="-1"><a class="header-anchor" href="#优缺点-2" aria-hidden="true">#</a> 优缺点</h4>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SVG Sprite 矢量可缩放，支持 CSS 着色，维护方便</td>
+<td>SVG Sprite 在部分极老旧浏览器（IE8 以下）兼容性差</td>
+</tr>
+<tr>
+<td>预加载可提升关键资源加载优先级，避免渲染卡顿</td>
+<td>预加载过多资源会抢占带宽，导致其他非关键资源加载延迟</td>
+</tr>
+<tr>
+<td>位图精灵图在 HTTP/1.1 环境下仍可减少请求数</td>
+<td>位图精灵图在 HTTP/2 下优势消失，且维护成本高，不建议作为默认方案</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="三、动画性能优化-减少回流-重绘-利用-gpu-加速" tabindex="-1"><a class="header-anchor" href="#三、动画性能优化-减少回流-重绘-利用-gpu-加速" aria-hidden="true">#</a> 三、动画性能优化：减少回流/重绘，利用 GPU 加速</h2>
+<h3 id="浏览器渲染管线速查" tabindex="-1"><a class="header-anchor" href="#浏览器渲染管线速查" aria-hidden="true">#</a> 浏览器渲染管线速查</h3>
+<p>理解动画优化的前提是掌握渲染各阶段的性能代价：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>触发条件（示例属性）</th>
+<th>性能代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Layout（回流/重排）</td>
+<td><code v-pre>width</code>/<code v-pre>height</code>/<code v-pre>margin</code>/<code v-pre>top</code>/<code v-pre>padding</code></td>
+<td>最高，触发整页或局部重新布局</td>
+</tr>
+<tr>
+<td>Paint（重绘）</td>
+<td><code v-pre>color</code>/<code v-pre>background-color</code>/<code v-pre>box-shadow</code>/<code v-pre>border-radius</code></td>
+<td>中等，不影响布局但需重新绘制像素</td>
+</tr>
+<tr>
+<td>Composite（合成）</td>
+<td><code v-pre>transform</code>/<code v-pre>opacity</code></td>
+<td>最低，由 GPU 直接处理，不占主线程</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><code v-pre>box-shadow</code> <strong>不触发回流</strong>，只触发重绘；<code v-pre>filter</code> 不触发回流，通常触发重绘，仅在元素已被提升为合成层时才能完全进入合成阶段。</p>
+</blockquote>
+<hr>
+<h3 id="一-基础优化-精简并可控动画" tabindex="-1"><a class="header-anchor" href="#一-基础优化-精简并可控动画" aria-hidden="true">#</a> （一）基础优化：精简并可控动画</h3>
+<h4 id="实操操作-4" tabindex="-1"><a class="header-anchor" href="#实操操作-4" aria-hidden="true">#</a> 实操操作</h4>
+<ol>
+<li>删除非核心动画，仅保留加载状态、交互反馈等提升体验的动画；</li>
+<li>支持动画关闭：通过 <code v-pre>prefers-reduced-motion</code> 媒体查询适配系统级偏好：</li>
+</ol>
+<div class="language-css line-numbers-mode" data-ext="css"><pre v-pre class="language-css"><code><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">prefers-reduced-motion</span><span class="token punctuation">:</span> reduce<span class="token punctuation">)</span></span> <span class="token punctuation">{</span>
+  <span class="token selector">*,
+  *::before,
+  *::after</span> <span class="token punctuation">{</span>
+    <span class="token property">animation-duration</span><span class="token punctuation">:</span> 0.01ms <span class="token important">!important</span><span class="token punctuation">;</span>
+    <span class="token property">transition-duration</span><span class="token punctuation">:</span> 0.01ms <span class="token important">!important</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><ol start="3">
+<li>优先使用 <strong>CSS 动画</strong>操作 <code v-pre>transform</code>/<code v-pre>opacity</code>；需要复杂逻辑控制时，使用 <strong>Web Animations API</strong> 或 GSAP 等成熟库，而非手写 <code v-pre>setInterval</code>/<code v-pre>setTimeout</code> 动画。</li>
+</ol>
+<h4 id="优化原因-4" tabindex="-1"><a class="header-anchor" href="#优化原因-4" aria-hidden="true">#</a> 优化原因</h4>
+<p>CSS 动画与 <code v-pre>requestAnimationFrame</code> 驱动的 JS 动画在主线程上性能基本相当。CSS 动画的核心优势在于：对 <code v-pre>transform</code>/<code v-pre>opacity</code> 属性，浏览器可将其提升至<strong>合成线程（Compositor Thread）独立执行</strong>，完全脱离主线程，避免 JS 执行、样式计算等任务干扰。<code v-pre>prefers-reduced-motion</code> 满足无障碍设计要求，同时降低低性能设备的渲染压力。</p>
+<h4 id="优缺点-3" tabindex="-1"><a class="header-anchor" href="#优缺点-3" aria-hidden="true">#</a> 优缺点</h4>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>减少动画资源占用，提升页面交互流畅度，适配无障碍设计</td>
+<td>精简动画可能让页面视觉效果稍显简洁，需平衡体验与性能</td>
+</tr>
+<tr>
+<td>CSS 动画的 <code v-pre>transform</code>/<code v-pre>opacity</code> 可在合成线程执行，不阻塞主线程</td>
+<td>复杂动画逻辑用纯 CSS 实现灵活性有限，需结合 Web Animations API 或 JS 库</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="二-关键操作-选对动画属性-避免回流" tabindex="-1"><a class="header-anchor" href="#二-关键操作-选对动画属性-避免回流" aria-hidden="true">#</a> （二）关键操作：选对动画属性，避免回流</h3>
+<h4 id="实操操作-5" tabindex="-1"><a class="header-anchor" href="#实操操作-5" aria-hidden="true">#</a> 实操操作</h4>
+<ol>
+<li><strong>优先使用合成层安全属性</strong>：<code v-pre>transform</code>（位移/缩放/旋转）、<code v-pre>opacity</code>，这是唯一能完全跳过回流和重绘、直接进入合成阶段的两类属性；</li>
+<li><strong>谨慎使用 <code v-pre>filter</code></strong>：<code v-pre>filter</code> 不触发回流，但通常触发重绘；仅在元素已被提升为独立合成层时才能获得 GPU 加速，不可与 <code v-pre>transform</code>/<code v-pre>opacity</code> 并列为同等&quot;安全属性&quot;；</li>
+<li><strong>禁止在动画中使用回流属性</strong>：<code v-pre>width</code>/<code v-pre>height</code>/<code v-pre>margin</code>/<code v-pre>padding</code>/<code v-pre>top</code>/<code v-pre>left</code>/<code v-pre>border</code> 等影响尺寸/位置/布局的属性；</li>
+<li><strong>位移动画用 <code v-pre>transform: translate()</code> 替代 <code v-pre>top</code>/<code v-pre>left</code></strong>，尺寸变化用 <code v-pre>transform: scale()</code> 替代 <code v-pre>width</code>/<code v-pre>height</code>。</li>
+</ol>
+<h4 id="优化原因-5" tabindex="-1"><a class="header-anchor" href="#优化原因-5" aria-hidden="true">#</a> 优化原因</h4>
+<p>回流（Layout）是渲染管线中最耗时的步骤，修改尺寸/位置会触发整页或局部回流，进而强制触发重绘。<code v-pre>transform</code>/<code v-pre>opacity</code> 仅触发合成，由 GPU 在独立线程处理，执行效率极高且不阻塞主线程。</p>
+<h4 id="优缺点-4" tabindex="-1"><a class="header-anchor" href="#优缺点-4" aria-hidden="true">#</a> 优缺点</h4>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>彻底避免回流，动画帧率稳定（60fps），无卡顿</td>
+<td>安全属性仅能实现位移/透明/缩放/旋转效果，复杂尺寸变化需绕路实现</td>
+</tr>
+<tr>
+<td>动画执行在合成线程，不影响主线程的其他交互响应</td>
+<td>部分老浏览器对 <code v-pre>transform</code> 3D 属性支持有兼容问题（需加 <code v-pre>-webkit-</code> 前缀）</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="三-进阶优化-gpu-合成加速与层管理" tabindex="-1"><a class="header-anchor" href="#三-进阶优化-gpu-合成加速与层管理" aria-hidden="true">#</a> （三）进阶优化：GPU 合成加速与层管理</h3>
+<h4 id="实操操作-6" tabindex="-1"><a class="header-anchor" href="#实操操作-6" aria-hidden="true">#</a> 实操操作</h4>
+<ol>
+<li><strong><code v-pre>will-change</code> 动态添加</strong>（推荐方式）：通过 JS 在动画触发前添加、结束后移除，避免写死在 CSS 文件中导致浏览器持续占用资源：</li>
+</ol>
+<div class="language-javascript line-numbers-mode" data-ext="js"><pre v-pre class="language-javascript"><code>element<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"mouseenter"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  element<span class="token punctuation">.</span>style<span class="token punctuation">.</span>willChange <span class="token operator">=</span> <span class="token string">"transform"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+element<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"animationend"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  element<span class="token punctuation">.</span>style<span class="token punctuation">.</span>willChange <span class="token operator">=</span> <span class="token string">"auto"</span><span class="token punctuation">;</span> <span class="token comment">// 动画结束后及时移除</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><ol start="2">
+<li><strong>兼容旧版浏览器</strong>：对不支持 <code v-pre>will-change</code> 的旧版 Safari 等，使用 <code v-pre>transform: translateZ(0)</code> 作为 Hack 手段触发合成层提升；</li>
+<li><strong>防止层爆炸</strong>：通过 Chrome DevTools <strong>Layers 面板</strong>监控合成层数量；为需要 GPU 加速的动画元素设置较高的 <code v-pre>z-index</code>，避免 z-index 较低的兄弟元素被**隐式合成（Implicit Compositing）**拉升为合成层；</li>
+<li><strong>控制合成层数量</strong>：桌面端建议合成层总数不超过 20 层，移动端更需严格控制。</li>
+</ol>
+<h4 id="优化原因-6" tabindex="-1"><a class="header-anchor" href="#优化原因-6" aria-hidden="true">#</a> 优化原因</h4>
+<p><code v-pre>will-change</code> 写入 CSS 文件会使浏览器<strong>持续维护</strong>该元素的优化状态，长期占用 GPU 内存，与&quot;仅在有卡顿时使用&quot;的原则自相矛盾，应通过 JS 动态管理生命周期。<strong>层爆炸</strong>是 GPU 加速最常见的性能陷阱：当一个元素被提升为合成层，其 z-index 较低的兄弟元素可能被浏览器被动提升，导致合成层数量失控，GPU 内存暴涨，性能反而劣化。</p>
+<h4 id="优缺点-5" tabindex="-1"><a class="header-anchor" href="#优缺点-5" aria-hidden="true">#</a> 优缺点</h4>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPU 加速让动画更流畅，尤其在移动设备上效果显著</td>
+<td>过度使用 GPU 加速会占用过多 GPU 内存，导致设备发热/其他页面卡顿</td>
+</tr>
+<tr>
+<td>JS 动态管理 <code v-pre>will-change</code> 生命周期，避免持续资源占用</td>
+<td>层爆炸问题隐蔽，需借助 DevTools Layers 面板主动排查</td>
+</tr>
+<tr>
+<td><code v-pre>translateZ(0)</code> 可兼容不支持 <code v-pre>will-change</code> 的旧版浏览器</td>
+<td>部分低端设备 GPU 性能差，加速后效果不明显甚至更卡</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="四、字体性能优化-减小加载耗时-保证文本可见" tabindex="-1"><a class="header-anchor" href="#四、字体性能优化-减小加载耗时-保证文本可见" aria-hidden="true">#</a> 四、字体性能优化：减小加载耗时，保证文本可见</h2>
+<h3 id="一-精简字体使用" tabindex="-1"><a class="header-anchor" href="#一-精简字体使用" aria-hidden="true">#</a> （一）精简字体使用</h3>
+<h4 id="实操操作-7" tabindex="-1"><a class="header-anchor" href="#实操操作-7" aria-hidden="true">#</a> 实操操作</h4>
+<ol>
+<li>整站控制字体数量在 <strong>2~3 种</strong>，优先使用 Web 安全字体（如微软雅黑、宋体，无需额外加载）；</li>
+<li>避免使用体积达数兆字节的大字体文件，优先选择轻量版字体。</li>
+</ol>
+<h4 id="优化原因-7" tabindex="-1"><a class="header-anchor" href="#优化原因-7" aria-hidden="true">#</a> 优化原因</h4>
+<p>字体文件体积过大，网络加载耗时久，且浏览器会等待字体加载完成后才显示文本，易出现文本空白屏。过多字体不仅增加加载成本，还会让页面视觉杂乱，降低用户体验。</p>
+<h4 id="优缺点-6" tabindex="-1"><a class="header-anchor" href="#优缺点-6" aria-hidden="true">#</a> 优缺点</h4>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>减少字体加载耗时，避免文本空白屏，提升页面加载体验</td>
+<td>字体数量受限，页面视觉设计的灵活性稍降</td>
+</tr>
+<tr>
+<td>Web 安全字体无加载成本，兼容性 100%</td>
+<td>部分小众设计风格无法通过 Web 安全字体实现</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="二-优化字体加载与子集化" tabindex="-1"><a class="header-anchor" href="#二-优化字体加载与子集化" aria-hidden="true">#</a> （二）优化字体加载与子集化</h3>
+<h4 id="实操操作-8" tabindex="-1"><a class="header-anchor" href="#实操操作-8" aria-hidden="true">#</a> 实操操作</h4>
+<ol>
+<li><strong>预加载核心字体</strong>：首屏标题/正文字体用：</li>
+</ol>
+<div class="language-html line-numbers-mode" data-ext="html"><pre v-pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preload<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>xxx.woff2<span class="token punctuation">"</span></span> <span class="token attr-name">as</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>font<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>font/woff2<span class="token punctuation">"</span></span> <span class="token attr-name">crossorigin</span> <span class="token punctuation">/></span></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><ol start="2">
+<li><strong>提前建立连接</strong>：第三方字体用 <code v-pre>&lt;link rel=&quot;preconnect&quot; href=&quot;字体域名&quot;&gt;</code>，减少 DNS 解析耗时；</li>
+<li><strong>字体子集化</strong>：仅打包项目需要的字形（如标题字、中文常用字），通过 <code v-pre>@font-face</code> 的 <code v-pre>unicode-range</code> 指定字形范围，使用 <strong>font-spider</strong> 或 <strong>fonttools</strong> 等工具自动生成子集。</li>
+</ol>
+<h4 id="优化原因-8" tabindex="-1"><a class="header-anchor" href="#优化原因-8" aria-hidden="true">#</a> 优化原因</h4>
+<p>预加载让核心字体优先加载，避免&quot;字体加载晚导致文本迟迟不显示&quot;。<code v-pre>preconnect</code> 提前完成 DNS 解析和 TCP 连接，减少第三方字体的加载延迟。子集化可大幅减小字体文件体积（仅保留常用汉字可减少 80% 以上体积），<code v-pre>unicode-range</code> 让浏览器仅在使用对应字符时才下载字体。</p>
+<h4 id="优缺点-7" tabindex="-1"><a class="header-anchor" href="#优缺点-7" aria-hidden="true">#</a> 优缺点</h4>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>子集化大幅减小字体体积，预加载提升核心字体加载速度</td>
+<td>子集化需工具处理，新增特殊字符需重新生成</td>
+</tr>
+<tr>
+<td><code v-pre>unicode-range</code> 避免无用字体加载，节省带宽</td>
+<td>预加载过多字体会抢占带宽，影响其他资源加载</td>
+</tr>
+<tr>
+<td>提前建立连接减少第三方字体加载延迟</td>
+<td>需精准判断核心字体，判断失误会导致预加载无效</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="三-定义字体显示行为" tabindex="-1"><a class="header-anchor" href="#三-定义字体显示行为" aria-hidden="true">#</a> （三）定义字体显示行为</h3>
+<h4 id="实操操作-9" tabindex="-1"><a class="header-anchor" href="#实操操作-9" aria-hidden="true">#</a> 实操操作</h4>
+<p>在 <code v-pre>@font-face</code> 中添加 <code v-pre>font-display</code> 描述符，根据场景选择合适的值：</p>
+<div class="language-css line-numbers-mode" data-ext="css"><pre v-pre class="language-css"><code><span class="token atrule"><span class="token rule">@font-face</span></span> <span class="token punctuation">{</span>
+  <span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token string">"MyFont"</span><span class="token punctuation">;</span>
+  <span class="token property">src</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">"myfont.woff2"</span><span class="token punctuation">)</span></span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"woff2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/* swap：先显示备用字体，加载完成后替换（推荐通用场景） */</span>
+  <span class="token property">font-display</span><span class="token punctuation">:</span> swap<span class="token punctuation">;</span>
+
+  <span class="token comment">/* fallback：短暂不可见后显示备用字体，超时则不替换（品牌字体推荐） */</span>
+  <span class="token comment">/* font-display: fallback; */</span>
+
+  <span class="token comment">/* optional：仅在网络极快时使用自定义字体，性能最友好 */</span>
+  <span class="token comment">/* font-display: optional; */</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h4 id="优化原因-9" tabindex="-1"><a class="header-anchor" href="#优化原因-9" aria-hidden="true">#</a> 优化原因</h4>
+<p>浏览器默认行为（<code v-pre>font-display: block</code>）是在字体加载期间隐藏文本，即 <strong>FOIT（Flash of Invisible Text）</strong>：文本完全不可见，加载完成后突然出现。<code v-pre>font-display: swap</code> 将其转变为 <strong>FOUT（Flash of Unstyled Text）</strong>：先显示备用字体，加载完成后替换，保证文本始终可见，但会产生字体替换时的视觉跳动。这是一种权衡，并非&quot;彻底解决&quot;——若自定义字体与备用字体差异明显，FOUT 的跳动感可能同样影响体验，此时应考虑 <code v-pre>fallback</code> 或 <code v-pre>optional</code>。</p>
+<h4 id="优缺点-8" tabindex="-1"><a class="header-anchor" href="#优缺点-8" aria-hidden="true">#</a> 优缺点</h4>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code v-pre>swap</code> 保证文本始终可见，避免 FOIT 空白屏</td>
+<td><code v-pre>swap</code> 会产生 FOUT（字体替换时的视觉跳动），差异大时体验较差</td>
+</tr>
+<tr>
+<td><code v-pre>optional</code> 对性能最友好，完全避免 FOUT</td>
+<td><code v-pre>optional</code> 在网络较慢时永久使用备用字体，自定义字体可能永远不显示</td>
+</tr>
+<tr>
+<td>实现简单，仅需一个 CSS 属性，主流浏览器兼容性好</td>
+<td>需根据字体重要程度和视觉差异选择合适的值，无统一最优解</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="五、进阶优化-利用-css-局限模块-减少样式重计算" tabindex="-1"><a class="header-anchor" href="#五、进阶优化-利用-css-局限模块-减少样式重计算" aria-hidden="true">#</a> 五、进阶优化：利用 CSS 局限模块，减少样式重计算</h2>
+<h3 id="实操操作-10" tabindex="-1"><a class="header-anchor" href="#实操操作-10" aria-hidden="true">#</a> 实操操作</h3>
+<p>适用于<strong>大型页面/长列表/无限滚动</strong>场景：</p>
+<div class="language-css line-numbers-mode" data-ext="css"><pre v-pre class="language-css"><code><span class="token selector">.content-section</span> <span class="token punctuation">{</span>
+  <span class="token comment">/* 视口外的内容不布局、不渲染，进入视口后再加载 */</span>
+  <span class="token comment">/* 注意：content-visibility: auto 已自动隐含 layout/style/paint 包含约束 */</span>
+  <span class="token comment">/* 无需在同一元素上重复声明 contain: layout paint（冗余） */</span>
+  <span class="token property">content-visibility</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span>
+
+  <span class="token comment">/* 配合设置占位大小，避免滚动条跳动 */</span>
+  <span class="token property">contain-intrinsic-size</span><span class="token punctuation">:</span> auto 200px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 若不使用 content-visibility，手动控制包含范围 */</span>
+<span class="token selector">.isolated-widget</span> <span class="token punctuation">{</span>
+  <span class="token comment">/* contain: content 等同于 layout style paint */</span>
+  <span class="token property">contain</span><span class="token punctuation">:</span> content<span class="token punctuation">;</span>
+
+  <span class="token comment">/* contain: strict 等同于 size layout style paint，适合已知固定尺寸的容器 */</span>
+  <span class="token comment">/* contain: strict; */</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote>
+<p><strong>重要</strong>：<code v-pre>content-visibility: auto</code> 已自动隐含 <code v-pre>layout</code>、<code v-pre>style</code>、<code v-pre>paint</code> 三种包含约束，<strong>不要</strong>在同一元素上再叠加 <code v-pre>contain: layout paint</code>，这是冗余操作。</p>
+</blockquote>
+<h3 id="优化原因-10" tabindex="-1"><a class="header-anchor" href="#优化原因-10" aria-hidden="true">#</a> 优化原因</h3>
+<p>大型页面/长列表会让浏览器持续重计算样式/布局，即使是视口外的内容。CSS 局限属性让浏览器独立渲染不同模块，仅重计算发生变化的部分，大幅降低渲染成本，提升页面滚动/交互流畅度。</p>
+<h3 id="优缺点-9" tabindex="-1"><a class="header-anchor" href="#优缺点-9" aria-hidden="true">#</a> 优缺点</h3>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大幅减少大型页面的样式重计算/布局耗时，滚动/交互更流畅</td>
+<td>仅适用于大型页面/长列表，小型页面使用无明显效果</td>
+</tr>
+<tr>
+<td><code v-pre>content-visibility</code> 可减少初始渲染耗时，提升首屏加载速度</td>
+<td>低版本浏览器（IE）不支持，需做兼容降级处理</td>
+</tr>
+<tr>
+<td>避免滚动条跳动，提升用户体验</td>
+<td>需合理设置 <code v-pre>contain-intrinsic-size</code>，否则会出现布局错乱</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="六、优化落地检查清单" tabindex="-1"><a class="header-anchor" href="#六、优化落地检查清单" aria-hidden="true">#</a> 六、优化落地检查清单</h2>
+<ol>
+<li>
+<ul>
+<li>[ ] 用浏览器工具定位了具体 CSS 性能问题，无盲目优化；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>[ ] 生产环境 CSS 已做最小化 + 服务器压缩；已使用 PurgeCSS 等工具自动清理无用样式；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>[ ] 首屏关键 CSS 已内联，或非首屏 CSS 已拆分并添加 <code v-pre>media</code> 属性，不阻塞首屏渲染；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>[ ] 图标类资源已使用 SVG Sprite 或 Icon Font；仅在 HTTP/1.1 兼容场景下使用位图精灵图；首屏关键资源已做 <code v-pre>preload</code> 预加载；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>[ ] 所有动画仅使用 <code v-pre>transform</code>/<code v-pre>opacity</code>；<code v-pre>filter</code> 动画已确认元素处于独立合成层；无在动画中使用 <code v-pre>width</code>/<code v-pre>height</code>/<code v-pre>margin</code>/<code v-pre>top</code> 等回流属性；<code v-pre>box-shadow</code> 等重绘属性的动画已评估性能影响；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>[ ] <code v-pre>will-change</code> 通过 JS 动态添加并在动画结束后及时移除，无全局写死在 CSS 文件中；已通过 DevTools Layers 面板确认合成层数量合理，无层爆炸问题；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>[ ] 字体已子集化，核心字体已预加载，<code v-pre>@font-face</code> 已根据场景选择合适的 <code v-pre>font-display</code> 值；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>[ ] 大型页面/长列表已使用 <code v-pre>content-visibility: auto</code> + <code v-pre>contain-intrinsic-size</code>；未在同一元素上冗余叠加 <code v-pre>contain: layout paint</code>；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>[ ] 优化后通过浏览器工具复测（Performance 面板 + Layers 面板），性能问题已解决，无新的样式/布局/层爆炸问题。</li>
+</ul>
+</li>
+</ol>
+<h3 id="参考" tabindex="-1"><a class="header-anchor" href="#参考" aria-hidden="true">#</a> 参考</h3>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Learn_web_development/Extensions/Performance/CSS" target="_blank" rel="noopener noreferrer">参考地址<ExternalLinkIcon/></a></p>
+</div></template>
+
+
