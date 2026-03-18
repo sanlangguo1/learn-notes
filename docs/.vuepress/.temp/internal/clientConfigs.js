@@ -6,7 +6,7 @@ import clientConfig4 from '/Users/chenzongqiang/Desktop/学习/learn-notes/node_
 import clientConfig5 from '/Users/chenzongqiang/Desktop/学习/learn-notes/node_modules/.pnpm/@vuepress+plugin-theme-data@2.0.0-rc.0/node_modules/@vuepress/plugin-theme-data/lib/client/config.js'
 import clientConfig6 from '/Users/chenzongqiang/Desktop/学习/learn-notes/node_modules/.pnpm/@vuepress+theme-default@2.0.0-rc.0/node_modules/@vuepress/theme-default/lib/client/config.js'
 import clientConfig7 from '/Users/chenzongqiang/Desktop/学习/learn-notes/docs/.vuepress/.temp/sass-palette/load-hope.js'
-import clientConfig8 from '/Users/chenzongqiang/Desktop/学习/learn-notes/node_modules/.pnpm/vuepress-plugin-auto-catalog@2.0.0-rc.1_vuepress-vite@2.0.0-rc.0_@types+node@24.7.0_@vu_399ce099aa2e4b9a4c433891e0e9a46a/node_modules/vuepress-plugin-auto-catalog/lib/client/config.js'
+import clientConfig8 from '/Users/chenzongqiang/Desktop/学习/learn-notes/node_modules/.pnpm/vuepress-plugin-auto-catalog@2.0.0-rc.1_vuepress-vite@2.0.0-rc.0_@types+node@25.5.0_@vu_3ae137f663e156582888483d9bd37f2f/node_modules/vuepress-plugin-auto-catalog/lib/client/config.js'
 
 export const clientConfigs = [
   clientConfig0,

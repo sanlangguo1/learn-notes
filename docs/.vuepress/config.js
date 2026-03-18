@@ -176,6 +176,10 @@ module.exports = {
         ],
       },
       { text: "github", link: "https://github.com/sanlangguo1/learn-notes" },
+      {
+        text: "电子书格式批量互转",
+        link: "https://github.com/sanlangguo1/mobi-epub-converter",
+      },
     ],
     sidebar: "auto",
   }),

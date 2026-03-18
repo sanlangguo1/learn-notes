@@ -2,7 +2,7 @@ import {
   isArray,
   isFunction,
   isString
-} from "./chunk-3RL2JYU6.js";
+} from "./chunk-FSIFGBP7.js";
 
 // node_modules/.pnpm/@vuepress+shared@2.0.0-rc.0/node_modules/@vuepress/shared/dist/index.js
 var resolveHeadIdentifier = ([
