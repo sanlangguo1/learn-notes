@@ -15,6 +15,62 @@
 <h2 id="_1-性能评估模型" tabindex="-1"><a class="header-anchor" href="#_1-性能评估模型" aria-hidden="true">#</a> 1.性能评估模型</h2>
 <h3 id="核心目的" tabindex="-1"><a class="header-anchor" href="#核心目的" aria-hidden="true">#</a> 核心目的</h3>
 <p>在做性能优化之前，首先要有一个衡量标准或模型，即“性能是什么”以及“如何评估”。这节旨在建立性能评估的视角与度量方式。</p>
+<table>
+<thead>
+<tr>
+<th><strong>指标</strong></th>
+<th><strong>全称</strong></th>
+<th><strong>优秀阈值</strong></th>
+<th><strong>状态核对</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FCP</strong></td>
+<td>First Contentful Paint</td>
+<td><strong>&lt; 1.8s</strong></td>
+<td>标志着用户看到屏幕有实际内容。</td>
+</tr>
+<tr>
+<td><strong>LCP</strong></td>
+<td>Largest Contentful Paint</td>
+<td><strong>&lt; 2.5s</strong></td>
+<td>核心指标，反映感知加载速度。</td>
+</tr>
+<tr>
+<td><strong>FID</strong></td>
+<td>First Input Delay</td>
+<td><strong>&lt; 100ms</strong></td>
+<td><strong>已过时</strong>。Google 已于 2024 年 3 月将其从核心指标中移除。</td>
+</tr>
+<tr>
+<td><strong>INP</strong></td>
+<td><strong>Interaction to Next Paint</strong></td>
+<td><strong>&lt; 200ms</strong></td>
+<td>这是目前的<strong>新标杆</strong>，衡量全生命周期的交互响应。</td>
+</tr>
+<tr>
+<td><strong>CLS</strong></td>
+<td>Cumulative Layout Shift</td>
+<td><strong>&lt; 0.1</strong></td>
+<td>衡量视觉稳定性，数值越小越稳。</td>
+</tr>
+<tr>
+<td><strong>TTI</strong></td>
+<td>Time to Interactive</td>
+<td><strong>&lt; 3.8s</strong></td>
+<td>反映页面何时真正可用。</td>
+</tr>
+<tr>
+<td><strong>TBT</strong></td>
+<td>Total Blocking Time</td>
+<td><strong>&lt; 200ms</strong></td>
+<td>通常作为分析 LCP 和 TTI 差值的关键参考。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>FID 的局限性</strong> ：它只测量用户“第一次”点击的延迟。如果用户第一次点击很快，但之后的滚动、输入卡顿，FID 依然会显示优秀（绿色）。这存在“幸存者偏差”。</p>
+<p><strong>INP 的优势</strong> ：它观察用户在页面上进行的所有交互（点击、触摸、按键），并取其中最差（或接近最差）的一个响应时间。它能更真实地反映页面是否“顺滑”。</p>
 <h3 id="关键信息点与思考" tabindex="-1"><a class="header-anchor" href="#关键信息点与思考" aria-hidden="true">#</a> 关键信息点与思考</h3>
 <ul>
 <li><strong>性能指标</strong>：可包括首屏时间、交互响应时间、帧率、内存占用、首字节时间 (TTFB)、总资源大小等。</li>
