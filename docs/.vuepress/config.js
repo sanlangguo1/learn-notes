@@ -14,6 +14,10 @@ module.exports = {
     navbar: [
       { text: "首页", link: "/nav/list.md" },
       {
+        text: "私有化AI 助手",
+        link: "https://next-chat-omega-three.vercel.app/",
+      },
+      {
         text: "算法",
         children: [
           {
