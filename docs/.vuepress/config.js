@@ -1,5 +1,6 @@
 import { defaultTheme } from "vuepress";
 import { autoCatalogPlugin } from "vuepress-plugin-auto-catalog";
+
 module.exports = {
   title: "三郎过",
   base: "/learn-notes/",
@@ -8,15 +9,28 @@ module.exports = {
       lang: "zh-CN",
     },
   },
-  head: [["link", { rel: "icon", href: "/img/logo.jpg" }]],
+  head: [
+    ["link", { rel: "icon", href: "/img/logo.jpg" }]
+    // 移除了无效的 CSS CDN 链接，Mermaid 10.x 样式已内联在 JS 中
+  ],
   theme: defaultTheme({
     logo: "/img/logo.jpg",
     navbar: [
       { text: "首页", link: "/nav/list.md" },
       {
-        text: "私有化AI 助手",
-        link: "https://next-chat-omega-three.vercel.app/",
+        text: "AI",
+        children: [
+          {
+            text: "私有化AI 助手",
+            link: "https://next-chat-omega-three.vercel.app/",
+          },
+          {
+            text: "如何写好提示词",
+            link: "/ai/prompt.md",
+          },
+        ],
       },
+
       {
         text: "算法",
         children: [
@@ -188,4 +202,8 @@ module.exports = {
     sidebar: "auto",
   }),
   plugins: [autoCatalogPlugin()],
+  // 客户端应用增强
+  clientAppEnhanceFiles: [
+    './.vuepress/clientAppEnhance.js'
+  ],
 };

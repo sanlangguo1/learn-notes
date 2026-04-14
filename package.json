@@ -19,6 +19,8 @@
     "license": "ISC",
     "devDependencies": {
         "@vuepress/client": "2.0.0-rc.0",
+        "markdown-it-mermaid": "^0.2.5",
+        "mermaid": "^11.14.0",
         "vue": "^3.3.9",
         "vuepress": "2.0.0-rc.0",
         "vuepress-plugin-auto-catalog": "2.0.0-rc.1"

@@ -1,0 +1,14 @@
+export const data = JSON.parse("{\"key\":\"v-699e5dc7\",\"path\":\"/ai/prompt.html\",\"title\":\"\",\"lang\":\"zh-CN\",\"frontmatter\":{},\"headers\":[{\"level\":3,\"title\":\"怎样才能创建好提示词\",\"slug\":\"怎样才能创建好提示词\",\"link\":\"#怎样才能创建好提示词\",\"children\":[]},{\"level\":3,\"title\":\"大语言模型的核心参数，就是在\\\"确定性\\\"和\\\"创造性\\\"之间做权衡。\",\"slug\":\"大语言模型的核心参数-就是在-确定性-和-创造性-之间做权衡。\",\"link\":\"#大语言模型的核心参数-就是在-确定性-和-创造性-之间做权衡。\",\"children\":[]},{\"level\":2,\"title\":\"六个参数，逐一拆解\",\"slug\":\"六个参数-逐一拆解\",\"link\":\"#六个参数-逐一拆解\",\"children\":[]},{\"level\":2,\"title\":\"流程图：参数决策思路\",\"slug\":\"流程图-参数决策思路\",\"link\":\"#流程图-参数决策思路\",\"children\":[]},{\"level\":2,\"title\":\"一句话记忆口诀\",\"slug\":\"一句话记忆口诀\",\"link\":\"#一句话记忆口诀\",\"children\":[]}],\"git\":{\"updatedTime\":null,\"contributors\":[]},\"filePathRelative\":\"ai/prompt.md\"}")
+
+if (import.meta.webpackHot) {
+  import.meta.webpackHot.accept()
+  if (__VUE_HMR_RUNTIME__.updatePageData) {
+    __VUE_HMR_RUNTIME__.updatePageData(data)
+  }
+}
+
+if (import.meta.hot) {
+  import.meta.hot.accept(({ data }) => {
+    __VUE_HMR_RUNTIME__.updatePageData(data)
+  })
+}
