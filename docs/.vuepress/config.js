@@ -10,7 +10,7 @@ module.exports = {
     },
   },
   head: [
-    ["link", { rel: "icon", href: "/img/logo.jpg" }]
+    ["link", { rel: "icon", href: "/img/logo.jpg" }],
     // 移除了无效的 CSS CDN 链接，Mermaid 10.x 样式已内联在 JS 中
   ],
   theme: defaultTheme({
@@ -20,6 +20,10 @@ module.exports = {
       {
         text: "AI",
         children: [
+          {
+            text: "JS 全栈实现 AI 知识库 langchain",
+            link: "https://github.com/sanlangguo1/langchain-doc",
+          },
           {
             text: "私有化AI 助手",
             link: "https://next-chat-omega-three.vercel.app/",
@@ -203,7 +207,5 @@ module.exports = {
   }),
   plugins: [autoCatalogPlugin()],
   // 客户端应用增强
-  clientAppEnhanceFiles: [
-    './.vuepress/clientAppEnhance.js'
-  ],
+  clientAppEnhanceFiles: ["./.vuepress/clientAppEnhance.js"],
 };

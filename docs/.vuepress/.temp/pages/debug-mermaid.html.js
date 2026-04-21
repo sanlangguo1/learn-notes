@@ -1,4 +1,4 @@
-export const data = JSON.parse("{\"key\":\"v-1d02f3e3\",\"path\":\"/debug-mermaid.html\",\"title\":\"Mermaid 调试页面\",\"lang\":\"zh-CN\",\"frontmatter\":{},\"headers\":[{\"level\":2,\"title\":\"测试代码块\",\"slug\":\"测试代码块\",\"link\":\"#测试代码块\",\"children\":[]},{\"level\":2,\"title\":\"普通代码块对比\",\"slug\":\"普通代码块对比\",\"link\":\"#普通代码块对比\",\"children\":[]}],\"git\":{\"updatedTime\":null,\"contributors\":[]},\"filePathRelative\":\"debug-mermaid.md\"}")
+export const data = JSON.parse("{\"key\":\"v-1d02f3e3\",\"path\":\"/debug-mermaid.html\",\"title\":\"Mermaid 调试页面\",\"lang\":\"zh-CN\",\"frontmatter\":{},\"headers\":[{\"level\":2,\"title\":\"测试代码块\",\"slug\":\"测试代码块\",\"link\":\"#测试代码块\",\"children\":[]},{\"level\":2,\"title\":\"普通代码块对比\",\"slug\":\"普通代码块对比\",\"link\":\"#普通代码块对比\",\"children\":[]}],\"git\":{\"updatedTime\":1776140756000,\"contributors\":[{\"name\":\"sanlangguo1\",\"email\":\"sanlangguo1@outlook.com\",\"commits\":1}]},\"filePathRelative\":\"debug-mermaid.md\"}")
 
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept()
