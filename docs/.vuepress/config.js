@@ -22,7 +22,7 @@ module.exports = {
         children: [
           {
             text: "JS 全栈实现 AI 知识库 langchain",
-            link: "https://github.com/sanlangguo1/langchain-doc",
+            link: "/ai/rag.md",
           },
           {
             text: "私有化AI 助手",
