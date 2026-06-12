@@ -21,6 +21,10 @@ module.exports = {
         text: "AI",
         children: [
           {
+            text: "opencode 搭建AI研发工作流",
+            link: "/ai/opencode.md",
+          },
+          {
             text: "JS 全栈实现 AI 知识库 langchain",
             link: "/ai/rag.md",
           },
